@@ -18,16 +18,6 @@ public class TitleScreen extends JFrame implements ActionListener{
         //TitleScreen.loadRecursos();
     }
 
-    /*public static void loadRecursos(){
-        try {
-                GraphicsEnvironment TitleFont = 
-                    GraphicsEnvironment.getLocalGraphicsEnvironment();
-                TitleFont.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Heavy Data Nerd Font Complete.ttf")));
-        } catch (IOException|FontFormatException e) {
-                System.exit(1);
-        }
-    }*/
-
     public TitleScreen(){
         //creo la ventana
         setLayout(null);
@@ -47,13 +37,13 @@ public class TitleScreen extends JFrame implements ActionListener{
             TitleFont.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Heavy Data Nerd Font Complete Windows Compatible.ttf")));
             titleFont = new Font("Heavy Data Nerd Font Complete Windows Compatible", Font.PLAIN, 40);
         } catch (IOException|FontFormatException e) {
-            titleFont = new Font("Arial", Font.PLAIN, 30);
+            titleFont = new Font("Arial", Font.PLAIN, 40);
         }
 
         try {
-            GraphicsEnvironment TitleFont = 
+            GraphicsEnvironment bFont = 
                 GraphicsEnvironment.getLocalGraphicsEnvironment();
-            TitleFont.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Shure Tech Mono Nerd Font Complete Windows Compatible.ttf")));
+            bFont.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Shure Tech Mono Nerd Font Complete Windows Compatible.ttf")));
             buttonFont = new Font("Shure Tech Mono Nerd Font Complete Windows Compatible", Font.PLAIN, 20);
         } catch (IOException|FontFormatException e) {
             buttonFont = new Font("Arial", Font.PLAIN, 30);
@@ -116,19 +106,32 @@ public class TitleScreen extends JFrame implements ActionListener{
         btnCreditos.setBorder(null);
         btnCreditos.addActionListener(this);
         c.add(btnCreditos);
-
         
     }
 
-
-
-    @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if(source == btnJugar){
             Juego juego = new Juego();
             juego.setVisible(true);
-            //this.setVisible(false);
+            dispose();
+        }
+        if(source == btnInstrucciones){
+            Instrucciones instrucciones = new Instrucciones();
+            instrucciones.setVisible(true);
+            dispose();
+        }
+        if(source == btnSalir){
+            System.exit(0);
+        }
+        if(source == btnConfig){
+            Configuracion configuracion = new Configuracion();
+            configuracion.setVisible(true);
+            dispose();
+        }
+        if(source == btnCreditos){
+            Creditos creditos = new Creditos();
+            creditos.setVisible(true);
             dispose();
         }
         

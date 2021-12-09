@@ -8,6 +8,6 @@ import java.io.IOException;
 
 
 public class Juego extends JFrame {
-    
+    //TODO hacer el juego aqui xd
     
 }
