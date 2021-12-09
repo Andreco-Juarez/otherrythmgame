@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class TitleScreen extends JFrame implements ActionListener{
     private Font titleFont, buttonFont;
+    JButton btnJugar, btnInstrucciones, btnSalir, btnConfig, btnCreditos;
     public static void main(String[] args) throws Exception {
         TitleScreen marco = new TitleScreen();
         marco.setSize(800, 600);
@@ -66,7 +67,7 @@ public class TitleScreen extends JFrame implements ActionListener{
         c.add(titulo);
 
         //implemento botones
-        JButton btnJugar = new JButton("Jugar");
+        btnJugar = new JButton("Jugar");
         btnJugar.setBounds(250, 150, 300, 30);
         btnJugar.setFont(buttonFont);
         btnJugar.setForeground(textoBotones);
@@ -76,8 +77,18 @@ public class TitleScreen extends JFrame implements ActionListener{
         btnJugar.addActionListener(this);
         c.add(btnJugar);
 
-        JButton btnInstrucciones = new JButton("Instrucciones");
-        btnInstrucciones.setBounds(250, 200, 300, 30);
+        btnConfig = new JButton("Configuracion");
+        btnConfig.setBounds(250, 200, 300, 30);
+        btnConfig.setFont(buttonFont);
+        btnConfig.setForeground(textoBotones);
+        btnConfig.setBackground(fondoBotones);
+        btnConfig.setFocusable(false);
+        btnConfig.setBorder(null);
+        btnConfig.addActionListener(this);
+        c.add(btnConfig);
+
+        btnInstrucciones = new JButton("Instrucciones");
+        btnInstrucciones.setBounds(250, 250, 300, 30);
         btnInstrucciones.setFont(buttonFont);
         btnInstrucciones.setForeground(textoBotones);
         btnInstrucciones.setBackground(fondoBotones);
@@ -86,8 +97,8 @@ public class TitleScreen extends JFrame implements ActionListener{
         btnInstrucciones.addActionListener(this);
         c.add(btnInstrucciones);
 
-        JButton btnSalir = new JButton("Salir");
-        btnSalir.setBounds(250, 250, 300, 30);
+        btnSalir = new JButton("Salir");
+        btnSalir.setBounds(250, 300, 300, 30);
         btnSalir.setFont(buttonFont);
         btnSalir.setForeground(textoBotones);
         btnSalir.setBackground(fondoBotones);
@@ -96,8 +107,8 @@ public class TitleScreen extends JFrame implements ActionListener{
         btnSalir.addActionListener(this);
         c.add(btnSalir);
 
-        JButton btnCreditos = new JButton("Creditos");
-        btnCreditos.setBounds(250, 300, 300, 30);
+        btnCreditos = new JButton("Creditos");
+        btnCreditos.setBounds(250, 350, 300, 30);
         btnCreditos.setFont(buttonFont);
         btnCreditos.setForeground(textoBotones);
         btnCreditos.setBackground(fondoBotones);
@@ -106,22 +117,20 @@ public class TitleScreen extends JFrame implements ActionListener{
         btnCreditos.addActionListener(this);
         c.add(btnCreditos);
 
-        JButton btnConfig = new JButton("Configuracion");
-        btnConfig.setBounds(250, 350, 300, 30);
-        btnConfig.setFont(buttonFont);
-        btnConfig.setForeground(textoBotones);
-        btnConfig.setBackground(fondoBotones);
-        btnConfig.setFocusable(false);
-        btnConfig.setBorder(null);
-        btnConfig.addActionListener(this);
-        c.add(btnConfig);
+        
     }
 
 
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        // TODO Auto-generated method stub
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if(source == btnJugar){
+            Juego juego = new Juego();
+            juego.setVisible(true);
+            //this.setVisible(false);
+            dispose();
+        }
         
     }
 }
