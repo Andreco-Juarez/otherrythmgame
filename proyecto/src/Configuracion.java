@@ -25,7 +25,7 @@ public class Configuracion extends JFrame {
         c.setBackground(Color.BLACK);
 
         //abrir archivo de configuracion
-        File config = new File("config.txt");
+        File config = new File("config.conf");
         Scanner obj = new Scanner(config);
         int i=0;
         while (obj.hasNextLine()) {
