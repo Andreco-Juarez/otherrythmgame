@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TitleScreen extends JFrame implements ActionListener{
@@ -125,9 +126,15 @@ public class TitleScreen extends JFrame implements ActionListener{
             System.exit(0);
         }
         if(source == btnConfig){
-            Configuracion configuracion = new Configuracion();
-            configuracion.setVisible(true);
-            dispose();
+            Configuracion configuracion;
+            try {
+                configuracion = new Configuracion();
+                configuracion.setVisible(true);
+                dispose();
+            } catch (FileNotFoundException e1) {
+                System.out.println("No se encontro el archivo de configuracion");
+                System.exit(404);
+            }
         }
         if(source == btnCreditos){
             Creditos creditos = new Creditos();
