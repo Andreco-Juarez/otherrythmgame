@@ -2,20 +2,17 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.colorchooser.ColorSelectionModel;
-
+import java.io.*;
 import java.awt.event.*;
-import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.Scanner;
-import java.util.jar.JarEntry;
 
-public class Configuracion extends JFrame {
-    //Timer timer = new Timer(1/60 * 1000);
-    private Color colorFondo = new Color(14,14,14), colorInput = new Color(6,127,8);
+public class Configuracion extends JFrame implements ActionListener {
+    
+    Timer timer ;
+    private Color colorFondo = new Color(14,14,14), colorInput = new Color(6,127,8), fondoBotones = new Color(31, 105, 96), textoBotones = new Color(142, 230, 88);;
     private Color colorNota1, colorNota2, colorNota3, colorNota4;
     private Font fuenteInstrucciones;
     private JPanel notas;
@@ -24,8 +21,7 @@ public class Configuracion extends JFrame {
     private char[] configuracion = {'a', 'w', 's', 'd'};
     private String[] teclas_split = {"",""};
     private String[] teclas_string = {"","", "", ""};
-    private JButton boton_aceptar, boton_cancelar;
-    private int size = 0;
+    private JButton boton_guardar, boton_salir;
     private int[][] colores = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
 
     public void CrearGUI() throws FileNotFoundException {
@@ -86,32 +82,32 @@ public class Configuracion extends JFrame {
         
         //instanciar label
         label1 = new JLabel("Left = " + configuracion[0]);
-        label1.setBounds(50, 50, 100, 50);
+        label1.setBounds(50, 120, 100, 50);
         label1.setForeground(Color.GREEN);
         label1.setFont(fuenteInstrucciones);
         c.add(label1);
 
         label2 = new JLabel("Up = " + configuracion[1]);
-        label2.setBounds(50, 100, 100, 50);
+        label2.setBounds(50, 220, 100, 50);
         label2.setForeground(Color.GREEN);
         label2.setFont(fuenteInstrucciones);
         c.add(label2);
 
         label3 = new JLabel("Down = " + configuracion[2]);
-        label3.setBounds(50, 150, 100, 50);
+        label3.setBounds(50, 320, 100, 50);
         label3.setForeground(Color.GREEN);
         label3.setFont(fuenteInstrucciones);
         c.add(label3);
 
         label4 = new JLabel("Right = " + configuracion[3]);
-        label4.setBounds(50, 200, 100, 50);
+        label4.setBounds(50, 420, 100, 50);
         label4.setForeground(Color.GREEN);
         label4.setFont(fuenteInstrucciones);
         c.add(label4);
 
         //instanciar textarea
         teclas_input1 = new JTextArea();
-        teclas_input1.setBounds(150, 65, 20, 20);
+        teclas_input1.setBounds(150, 130, 20, 20);
         teclas_input1.setFont(fuenteInstrucciones);
         teclas_input1.setForeground(colorInput);
         teclas_input1.setBackground(colorFondo);
@@ -120,7 +116,7 @@ public class Configuracion extends JFrame {
         c.add(teclas_input1);
 
         teclas_input2 = new JTextArea();
-        teclas_input2.setBounds(150, 115, 20, 20);
+        teclas_input2.setBounds(150, 230, 20, 20);
         teclas_input2.setFont(fuenteInstrucciones);
         teclas_input2.setForeground(colorInput);
         teclas_input2.setBackground(colorFondo);
@@ -129,7 +125,7 @@ public class Configuracion extends JFrame {
         c.add(teclas_input2);
 
         teclas_input3 = new JTextArea();
-        teclas_input3.setBounds(150, 165, 20, 20);
+        teclas_input3.setBounds(150, 330, 20, 20);
         teclas_input3.setFont(fuenteInstrucciones);
         teclas_input3.setForeground(colorInput);
         teclas_input3.setBackground(colorFondo);
@@ -138,7 +134,7 @@ public class Configuracion extends JFrame {
         c.add(teclas_input3);
 
         teclas_input4 = new JTextArea();
-        teclas_input4.setBounds(150, 215, 20, 20);
+        teclas_input4.setBounds(150, 430, 20, 20);
         teclas_input4.setFont(fuenteInstrucciones);
         teclas_input4.setForeground(colorInput);
         teclas_input4.setBackground(colorFondo);
@@ -253,38 +249,135 @@ public class Configuracion extends JFrame {
         input_colorB4.setBorder(null);
         input_colorB4.setText(""+colores[3][2]);
         c.add(input_colorB4);
-        
+
 
         //instanciar panel
         notas = new JPanel();
         notas.setBounds(200, 50, 120, 400);
-        notas.setBackground(Color.GREEN);
+        notas.setBackground(colorFondo);
         c.add(notas);
+
+        //instanciar botones
+        boton_guardar = new JButton("Guardar Configuracion");
+        boton_guardar.setBounds(400, 500, 300, 40);
+        boton_guardar.setFont(fuenteInstrucciones);
+        boton_guardar.setBackground(fondoBotones);
+        boton_guardar.setForeground(textoBotones);
+        boton_guardar.setBorder(null);
+        boton_guardar.addActionListener(this);
+        c.add(boton_guardar);
+
+        boton_salir = new JButton("Regresar");
+        boton_salir.setBounds(30, 500, 300, 40);
+        boton_salir.setFont(fuenteInstrucciones);
+        boton_salir.setBackground(fondoBotones);
+        boton_salir.setForeground(textoBotones);
+        boton_salir.setBorder(null);
+        boton_salir.addActionListener(this);
+        c.add(boton_salir);
         
     }
 
     public Configuracion() throws FileNotFoundException {
-        Timer timer = new Timer(1/24 * 1000, new ActionListener() {
+        CrearGUI();
+        timer = new Timer(1/24 * 1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    CrearGUI();
-                    
-                    Graphics g = notas.getGraphics();
-                    g.setColor(colorNota1);
-                    g.fillOval(50, 50, 50, 50);
-                    g.setColor(colorNota2);
-                    g.fillOval(50, 150, 50, 50);
-                    g.setColor(colorNota3);
-                    g.fillOval(50, 250, 50, 50);
-                    g.setColor(colorNota4);
-                    g.fillOval(50, 350, 50, 50);
-                } catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                
+                Graphics g = notas.getGraphics();
+                g.setColor(colorNota1);
+                g.fillOval(50, 50, 50, 50);
+                g.setColor(colorNota2);
+                g.fillOval(50, 150, 50, 50);
+                g.setColor(colorNota3);
+                g.fillOval(50, 250, 50, 50);
+                g.setColor(colorNota4);
+                g.fillOval(50, 350, 50, 50);
+                
             }
         });
 
         timer.start();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == boton_salir) {
+            TitleScreen marco = new TitleScreen();
+            marco.setSize(800, 600);
+            marco.setVisible(true);
+            marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            marco.setTitle("Other Rythm Game");
+            dispose();
+            timer.stop();
+        }
+        if(source == boton_guardar){
+            String[] conf = new String[16];
+            conf[0] = teclas_input1.getText();
+            conf[1] = teclas_input2.getText();
+            conf[2] = teclas_input3.getText();
+            conf[3] = teclas_input4.getText();
+            conf[4] = input_colorR1.getText();
+            conf[5] = input_colorG1.getText();
+            conf[6] = input_colorB1.getText();
+            conf[7] = input_colorR2.getText();
+            conf[8] = input_colorG2.getText();
+            conf[9] = input_colorB2.getText();
+            conf[10] = input_colorR3.getText();
+            conf[11] = input_colorG3.getText();
+            conf[12] = input_colorB3.getText();
+            conf[13] = input_colorR4.getText();
+            conf[14] = input_colorG4.getText();
+            conf[15] = input_colorB4.getText();
+            FileWriter fichero = null;
+            PrintWriter pw = null;
+            try
+            {
+                fichero = new FileWriter("config.conf");
+                pw = new PrintWriter(fichero);
+
+                pw.println("left=\""+conf[0]+"\"");
+                pw.println("down=\""+conf[1]+"\"");
+                pw.println("up=\""+conf[2]+"\"");
+                pw.println("right=\""+conf[3]+"\"");
+                pw.println("[COLORES]");
+                pw.println("color1notaR="+conf[4]);
+                pw.println("color1notaG="+conf[5]);
+                pw.println("color1notaB="+conf[6]);
+                pw.println("color2notaR="+conf[7]);
+                pw.println("color2notaG="+conf[8]);
+                pw.println("color2notaB="+conf[9]);
+                pw.println("color3notaR="+conf[10]);
+                pw.println("color3notaG="+conf[11]);
+                pw.println("color3notaB="+conf[12]);
+                pw.println("color4notaR="+conf[13]);
+                pw.println("color4notaG="+conf[14]);
+                pw.println("color4notaB="+conf[15]);
+                
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }finally {
+                try {
+                    if (null != fichero)
+                    fichero.close();
+                } catch (Exception e2) {
+                   e2.printStackTrace();
+                }
+            }
+            try {
+                CrearGUI();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            TitleScreen marco = new TitleScreen();
+            marco.setSize(800, 600);
+            marco.setVisible(true);
+            marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            marco.setTitle("Another Rhythm Game");
+            dispose();
+            timer.stop();
+        }
+        
     }
 }

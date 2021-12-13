@@ -15,7 +15,7 @@ public class TitleScreen extends JFrame implements ActionListener{
         marco.setSize(800, 600);
         marco.setVisible(true);
         marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        marco.setTitle("Other Rythm Game");
+        marco.setTitle("Another Rhythm Game");
         //TitleScreen.loadRecursos();
     }
 
