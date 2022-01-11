@@ -20,7 +20,6 @@ public class Configuracion extends JFrame implements ActionListener {
     private JLabel label1, label2, label3, label4;
     private char[] configuracion = {'a', 'w', 's', 'd'};
     private String[] teclas_split = {"",""};
-    private String[] teclas_string = {"","", "", ""};
     private JButton boton_guardar, boton_salir;
     private int[][] colores = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
 
