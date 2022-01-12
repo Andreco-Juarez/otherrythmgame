@@ -20,9 +20,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 //import java.util.ArrayList;
 import java.io.InputStream;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class JuegoGrafico extends Canvas implements Runnable{
+public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////// Clase Nota #NOTA //////////////////////////////
     public class Nota{
         int alto, ancho;
         int radio=100;
@@ -32,9 +40,12 @@ public class JuegoGrafico extends Canvas implements Runnable{
             this.ancho=ancho;
         }
         void avanzar(){
-            alto+=27;
+            alto+=3;
         }
     }
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////// Variblable globales #GLOBALES //////////////////////////////
 
     private Vector<Nota> notas = new Vector<Nota>(500);
     private Vector<String> hitobject = new Vector<String>(1500);
@@ -42,17 +53,62 @@ public class JuegoGrafico extends Canvas implements Runnable{
     public Graphics g;
     public Clip clip;
     public boolean song=false;
+    private char[] configuracion = {'a', 'w', 's', 'd'};
+    private String[] teclas_split = {"",""};
+    private int[][] colores = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
     
 	private JFrame frame;
 	
 	private final int WIDTH = 1000, HEIGHT = 1000;
-	private int x = 20, y = 20, fps, tps;
+	private int x = 20, y = 20, fps, tps, z=0;
 	
 	private boolean running = false;
+    private boolean[] keys = {false,false,false,false};
 
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////// metodo para iniciar configuracion #INICIALCONF //////////////////////////////
+    public void inicialConf(){
+        File config = new File("config.conf");
+        try {
+            Scanner obj = new Scanner(config);
+            int i=0, k=0, j=0;
+            boolean color=false;
+            while (obj.hasNextLine()) {
+                String linea = obj.nextLine();
+                
+                if(j==4) {
+                    color = true;
+                    i=0;
+                    linea=obj.nextLine();
+                }
+                if(color){
+                    teclas_split = linea.split("=");
+                    colores[i][k] = Integer.parseInt(teclas_split[1]);
+                    k++;
+                    if(k==3)
+                    {
+                        i++;
+                        k=0;
+                    }
+                }
+                else{
+                    teclas_split = linea.split("=");
+                    configuracion[i] = teclas_split[1].charAt(1);
+                    i++;
+                }
+                j++;
+            }
+        obj.close();
+        } catch (FileNotFoundException e) {
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////// metodo para iniciar objetos #INICIALOBJECT //////////////////////////////
     public void inicialObject(){
         int i=0;
-        File config = new File("spear1.arg");
+        File config = new File("xevel1.arg");
         try (Scanner obj = new Scanner(config)) {
             while(obj.hasNextLine()){
                 String linea = obj.nextLine();
@@ -60,7 +116,7 @@ public class JuegoGrafico extends Canvas implements Runnable{
                 {
                     String[] split =linea.split("=");
                     tiempo = Integer.parseInt(split[1]);
-                    System.out.println(tiempo);
+                    //System.out.println(tiempo);
                 }
                 else if(i>1){
                     String[] split =linea.split(",");
@@ -74,7 +130,11 @@ public class JuegoGrafico extends Canvas implements Runnable{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        //System.out.println(hitobject);
     }
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////// constructor //////////////////////////////
 	
 	public JuegoGrafico() {
 		frame = new JFrame("FPS: ~ TPS: ~");
@@ -88,14 +148,42 @@ public class JuegoGrafico extends Canvas implements Runnable{
 		frame.add(this);
 		frame.setVisible(true);
         inicialObject();
+        inicialConf();
+		frame.addKeyListener(this);
 
         Timer timer2 = new Timer();
 
         TimerTask tarea2 = new TimerTask(){
             public void run(){
-                for(int i=0;i<hitobject.size();i++){
+                //currentTimeSong++;
+                
+                for(int i=0+z;i<hitobject.size();i++){
                     String[] split = hitobject.get(i).split(",");
-                    if(currentTimeSong==Integer.parseInt(split[1])){
+                    //System.out.println(currentTimeSong+"||||"+split[1]);
+                    if(currentTimeSong>=Integer.parseInt(split[1])){
+                        //System.out.println(currentTimeSong+"||||"+split[1]);
+                        if(split[0].equals("64")){
+                            notas.addElement(new Nota(0,255));
+                        }
+                        else if(split[0].equals("192")){
+                            notas.addElement(new Nota(0,380));
+                        }
+                        else if(split[0].equals("320")){
+                            notas.addElement(new Nota(0,505));
+                        }
+                        else if(split[0].equals("448")){
+                            notas.addElement(new Nota(0,630));
+                        }
+                        z++;
+                    }
+                    
+                    //notas.elementAt(i).avanzar();
+                }
+
+                /*hitobject.forEach((object) -> {
+                    int i = 0;
+                    String[] split = object.split(",");
+                    if(currentTimeSong>=Integer.parseInt(split[1])){
                         if(split[0].equals("64")){
                             notas.addElement(new Nota(0,255));
                         }
@@ -109,13 +197,42 @@ public class JuegoGrafico extends Canvas implements Runnable{
                             notas.addElement(new Nota(0,630));
                         }
                     }
-                }
-                currentTimeSong++;       
-                System.out.println(currentTimeSong);       
+                    else if(Integer.parseInt(split[1])+1500>=currentTimeSong){
+                        hitobject.remove(i);
+                    }
+                    i++;
+                });*/
+                
+                /*for(int i=0; i<notas.size();i++){
+                    if(notas.elementAt(i).alto<=1000)
+                        notas.elementAt(i).avanzar();
+                    //System.out.println("Nota"+i+"||||"+notas.elementAt(i).alto);  
+                }*/
+                notas.forEach((nota) -> {
+                    //int i=0;
+                    if(nota.alto<=1000)
+                        nota.avanzar();
+                    //else
+                    //    notas.remove(i);
+                    //i++;
+                });
+                //System.out.println();
             }
         };
 
-        timer2.schedule(tarea2, 0, 1);
+        //timer2.schedule(tarea2, 0, 1);
+
+        Timer tiempo = new Timer();
+        TimerTask tareaContra = new TimerTask() {
+            public void run() {
+                currentTimeSong++;
+                System.out.println(currentTimeSong);
+            }
+        };
+        
+        tiempo.schedule(tareaContra, 0, 1);
+
+
 		start();
 	}
 	
@@ -149,6 +266,7 @@ public class JuegoGrafico extends Canvas implements Runnable{
 	}
 	
 	private void draw(Graphics g) {
+        int i=0, k=0;
 		g.setColor(Color.gray);
         g.fillRect(225,0,550,1000);
         g.setColor(Color.BLACK);
@@ -156,20 +274,28 @@ public class JuegoGrafico extends Canvas implements Runnable{
         g.fillOval(380,850,100,100);
         g.fillOval(505,850,100,100);
         g.fillOval(630,850,100,100);
-        for(int i=0;i<notas.size();i++){
+        for(i=0;i<notas.size();i++){
             g.setColor(Color.WHITE);
             g.fillOval(notas.elementAt(i).ancho, notas.elementAt(i).alto, notas.elementAt(i).radio, notas.elementAt(i).radio);
-            notas.elementAt(i).avanzar();
         }
-        /*if(song == false){
-            try {
-                Thread.sleep(667);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            clip.start();
-            song = true;
-        }*/
+        
+        
+        if(keys[0]==true){
+            g.setColor(Color.WHITE);
+            g.fillOval(255,850,100,100);
+        }
+        if(keys[1]==true){
+            g.setColor(Color.WHITE);
+            g.fillOval(380,850,100,100);
+        }
+        if(keys[2]==true){
+            g.setColor(Color.WHITE);
+            g.fillOval(505,850,100,100);
+        }
+        if(keys[3]==true){
+            g.setColor(Color.WHITE);
+            g.fillOval(630,850,100,100);
+        }
 	}
 	
 	private void tick(double delta) {
@@ -191,17 +317,7 @@ public class JuegoGrafico extends Canvas implements Runnable{
 		boolean needsRender = false; //True when the screen is dirty (when we have ticked)
 
         
-        try{
-            File file = new File("audio.wav");
-            AudioInputStream audio = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audio);
-            clip.setFramePosition(-6067);
-            clip.start();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        
         
         
 		
@@ -240,7 +356,72 @@ public class JuegoGrafico extends Canvas implements Runnable{
 				secondTime = System.currentTimeMillis() + 1000; //Set the time which we must again update fps/tps (one second from the current time)
 			}
 			
-			try { Thread.sleep(10); } catch(Exception e) { e.printStackTrace(); } //Attempt to sleep the thread for 10ms, not necessarry to run it nonstop even though our game will behave okay
+			//try { Thread.sleep(10); } catch(Exception e) { e.printStackTrace(); } //Attempt to sleep the thread for 10ms, not necessarry to run it nonstop even though our game will behave okay
+            try{
+                if(song==false)
+                {
+                    
+                    File file = new File("xevel.wav");
+                    AudioInputStream audio = AudioSystem.getAudioInputStream(file);
+                    clip = AudioSystem.getClip();
+                    clip.open(audio);
+                    clip.setFramePosition(0);
+                    clip.start();
+                    song=true;
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
 		}
 	}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyChar() == configuracion[0]){
+            keys[0] = true;
+        }   
+        if(e.getKeyChar() == configuracion[1]){
+            keys[1] = true;
+        }
+        if(e.getKeyChar() == configuracion[2]){
+            keys[2] = true;
+        }
+        if(e.getKeyChar() == configuracion[3]){
+            keys[3] = true;
+        }  
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyChar() == configuracion[0]){
+            keys[0] = true;
+        }   
+        if(e.getKeyChar() == configuracion[1]){
+            keys[1] = true;
+        }
+        if(e.getKeyChar() == configuracion[2]){
+            keys[2] = true;
+        }
+        if(e.getKeyChar() == configuracion[3]){
+            keys[3] = true;
+        }    
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyChar() == configuracion[0]){
+            keys[0] = false;
+        }
+        if(e.getKeyChar() == configuracion[1]){
+            keys[1] = false;
+        }
+        if(e.getKeyChar() == configuracion[2]){
+            keys[2] = false;
+        }
+        if(e.getKeyChar() == configuracion[3]){
+            keys[3] = false;
+        }
+    }
 }

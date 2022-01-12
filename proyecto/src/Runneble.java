@@ -58,7 +58,7 @@ public class Runneble extends Thread{
 
     public void inicialObject(){
         int i=0;
-        File config = new File("spear1.arg");
+        File config = new File("xevel.arg");
         try (Scanner obj = new Scanner(config)) {
             while(obj.hasNextLine()){
                 String linea = obj.nextLine();
