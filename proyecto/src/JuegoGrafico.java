@@ -40,7 +40,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
             this.ancho=ancho;
         }
         void avanzar(){
-            alto+=3;
+            alto+=2;
         }
     }
 
@@ -60,7 +60,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 	private JFrame frame;
 	
 	private final int WIDTH = 1000, HEIGHT = 1000;
-	private int x = 20, y = 20, fps, tps, z=0;
+	private int x = 20, y = 20, fps, tps, z=0, w=0;
 	
 	private boolean running = false;
     private boolean[] keys = {false,false,false,false};
@@ -108,7 +108,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     //////////////////////// metodo para iniciar objetos #INICIALOBJECT //////////////////////////////
     public void inicialObject(){
         int i=0;
-        File config = new File("xevel1.arg");
+        File config = new File("spearClean.arg");
         try (Scanner obj = new Scanner(config)) {
             while(obj.hasNextLine()){
                 String linea = obj.nextLine();
@@ -120,7 +120,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                 }
                 else if(i>1){
                     String[] split =linea.split(",");
-                    hitobject.add(split[0]+","+split[2]);
+                    hitobject.add(split[0]+","+split[1]);
                     //System.out.println(split[0]+","+split[2]);
                 }
                 i++;
@@ -157,10 +157,10 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
             public void run(){
                 //currentTimeSong++;
                 
-                for(int i=0+z;i<hitobject.size();i++){
+                for(int i=0+z;i<10+z && i<hitobject.size();i++){
+                    //System.out.println(i + "||||"+ hitobject.size());
                     String[] split = hitobject.get(i).split(",");
-                    //System.out.println(currentTimeSong+"||||"+split[1]);
-                    if(currentTimeSong>=Integer.parseInt(split[1])){
+                    if(currentTimeSong>=Integer.parseInt(split[1])-500){
                         //System.out.println(currentTimeSong+"||||"+split[1]);
                         if(split[0].equals("64")){
                             notas.addElement(new Nota(0,255));
@@ -175,6 +175,11 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                             notas.addElement(new Nota(0,630));
                         }
                         z++;
+                        /*if(z<586)
+                            z++;
+                        else{
+                            System.exit(0);
+                        }*/
                     }
                     
                     //notas.elementAt(i).avanzar();
@@ -203,34 +208,37 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                     i++;
                 });*/
                 
-                /*for(int i=0; i<notas.size();i++){
+                for(int i=0+w; i<notas.size();i++){
                     if(notas.elementAt(i).alto<=1000)
                         notas.elementAt(i).avanzar();
+                    else
+                        w++;
                     //System.out.println("Nota"+i+"||||"+notas.elementAt(i).alto);  
-                }*/
-                notas.forEach((nota) -> {
+                }
+                /*notas.forEach((nota) -> {
                     //int i=0;
                     if(nota.alto<=1000)
                         nota.avanzar();
                     //else
                     //    notas.remove(i);
                     //i++;
-                });
+                });*/
                 //System.out.println();
+                currentTimeSong++;
             }
         };
 
-        //timer2.schedule(tarea2, 0, 1);
+        timer2.schedule(tarea2, 0, 1);
 
-        Timer tiempo = new Timer();
+        /*Timer tiempo = new Timer();
         TimerTask tareaContra = new TimerTask() {
             public void run() {
                 currentTimeSong++;
-                System.out.println(currentTimeSong);
+                //System.out.println(currentTimeSong);
             }
         };
         
-        tiempo.schedule(tareaContra, 0, 1);
+        tiempo.schedule(tareaContra, 0, 1);*/
 
 
 		start();
@@ -274,7 +282,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         g.fillOval(380,850,100,100);
         g.fillOval(505,850,100,100);
         g.fillOval(630,850,100,100);
-        for(i=0;i<notas.size();i++){
+        for(i=0+w;i<notas.size();i++){
             g.setColor(Color.WHITE);
             g.fillOval(notas.elementAt(i).ancho, notas.elementAt(i).alto, notas.elementAt(i).radio, notas.elementAt(i).radio);
         }
@@ -305,7 +313,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 	
 	@Override
 	public void run() {
-		int desiredTPS = 100; //Target ticks per second
+		int desiredTPS = 60; //Target ticks per second
 		
 		long lastTime = System.currentTimeMillis(); //Time since we last looped (tick + draw), initialized here to the current time
 		long secondTime = lastTime + 1000; //Target time one second ahead of when we last updated fps/tps
@@ -361,7 +369,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                 if(song==false)
                 {
                     
-                    File file = new File("xevel.wav");
+                    File file = new File("spear.wav");
                     AudioInputStream audio = AudioSystem.getAudioInputStream(file);
                     clip = AudioSystem.getClip();
                     clip.open(audio);
