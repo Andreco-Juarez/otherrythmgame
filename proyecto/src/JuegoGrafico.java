@@ -31,7 +31,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 
     //////////////////////////////////////////////////////////////////
     //////////////////////// Clase Nota #NOTA //////////////////////////////
-    public class Nota{
+    /*public class Nota{
         int alto, ancho;
         int radio=100;
         boolean block=false;
@@ -45,7 +45,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         void avanzar(){
             alto+=2;
         }
-    }
+    }*/
 
     //////////////////////////////////////////////////////////////////
     //////////////////////// Variblable globales #GLOBALES //////////////////////////////
@@ -62,11 +62,13 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     private char[] configuracion = {'a', 'w', 's', 'd'};
     private String[] teclas_split = {"",""};
     private int[][] colores = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
+    public String nivelA, audio;
+
     
 	private JFrame frame;
 	
 	private final int WIDTH = 1000, HEIGHT = 1000;
-	private int x = 20, y = 20, fps, tps, z=0, w=0;
+	private int x = 20, y = 20, fps, tps, z=0, w=0, vidasJuego=0;
 	
 	private boolean running = false;
     private boolean[] keys = {false,false,false,false};
@@ -74,6 +76,12 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 
     //////////////////////////////////////////////////////////////////
     //////////////////////// metodo para iniciar configuracion #INICIALCONF //////////////////////////////
+
+    /*JuegoGrafico(String nivel, int vidas){
+        this.nivelA = nivel+"Clean.arg";
+        this.audio = nivel+".wav";
+        this.vidasJuego = vidas;
+    }*/
 
     public void checkInput(int side){
         ///System.out.println(combo);
@@ -87,18 +95,21 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                         if(alturaactual > 850 && alturaactual < 900 ){
                             
                             notas.elementAt(i).ps = 'c' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 900 && alturaactual < 950 ){
                             
                             notas.elementAt(i).ps = 'b' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 950 && alturaactual < 1000 ){
                             
                             notas.elementAt(i).ps = 'a' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 1000 && alturaactual < 1050 ){
                             
                             notas.elementAt(i).ps = 's' ;
-                        }
-                        if(alturaactual > 800){
-                            
                             notas.elementAt(i).block=true;
                             combo++;
                         }
@@ -111,18 +122,22 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                         if(alturaactual > 850 && alturaactual < 900 ){
                             
                             notas.elementAt(i).ps = 'c' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
+
                         }else if(alturaactual > 900 && alturaactual < 950 ){
                             
                             notas.elementAt(i).ps = 'b' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 950 && alturaactual < 1000 ){
                             
                             notas.elementAt(i).ps = 'a' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 1000 && alturaactual < 1050 ){
                             
                             notas.elementAt(i).ps = 's' ;
-                        }
-                        if(alturaactual > 800){
-                            
                             notas.elementAt(i).block=true;
                             combo++;
                         }
@@ -135,18 +150,21 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                         if(alturaactual > 850 && alturaactual < 900 ){
                             
                             notas.elementAt(i).ps = 'c' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 900 && alturaactual < 950 ){
                             
                             notas.elementAt(i).ps = 'b' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 950 && alturaactual < 1000 ){
                             
                             notas.elementAt(i).ps = 'a' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 1000 && alturaactual < 1050 ){
                             
                             notas.elementAt(i).ps = 's' ;
-                        }
-                        if(alturaactual > 800){
-                            
                             notas.elementAt(i).block=true;
                             combo++;
                         }
@@ -159,18 +177,21 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                         if(alturaactual > 850 && alturaactual < 900 ){
                             
                             notas.elementAt(i).ps = 'c' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 900 && alturaactual < 950 ){
                             
                             notas.elementAt(i).ps = 'b' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 950 && alturaactual < 1000 ){
                             
                             notas.elementAt(i).ps = 'a' ;
+                            notas.elementAt(i).block=true;
+                            combo++;
                         }else if(alturaactual > 1000 && alturaactual < 1050 ){
                             
                             notas.elementAt(i).ps = 's' ;
-                        }
-                        if(alturaactual > 800){
-                            
                             notas.elementAt(i).block=true;
                             combo++;
                         }
@@ -221,7 +242,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     //////////////////////// metodo para iniciar objetos #INICIALOBJECT //////////////////////////////
     public void inicialObject(){
         int i=0;
-        File config = new File("xevelClean.arg");
+        File config = new File(nivelA);
         try (Scanner obj = new Scanner(config)) {
             while(obj.hasNextLine()){
                 String linea = obj.nextLine();
@@ -241,7 +262,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
             obj.close();
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("No se encontro el archivo");
         }
         //System.out.println(hitobject);
     }
@@ -249,7 +270,11 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     //////////////////////////////////////////////////////////////////
     //////////////////////// constructor //////////////////////////////
 	
-	public JuegoGrafico() {
+	public JuegoGrafico(String nivel, int vidas) {
+        System.out.println("Iniciando Juego");
+        nivelA = nivel+"Clean.arg";
+        audio = nivel+".wav";
+        vidasJuego = vidas;
 		frame = new JFrame("FPS: ~ TPS: ~");
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setResizable(false);
@@ -314,8 +339,10 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                         w++;
                         if(notas.elementAt(i).block==false){
                             combo=0;
+                            notas.elementAt(i).ps='f';
                             //System.out.println("entre");
                             notas.elementAt(i).block=true;
+                            vidasJuego--;
                         }
                         
                     }
@@ -445,9 +472,11 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         
 		
 		while(running) {
-            if(currentTimeSong>=tiempo){
+            if(currentTimeSong>=tiempo || vidasJuego==0){
                 stop();
-                System.exit(0);
+                Score sc = new Score(notas);
+                sc.setVisible(true);
+                
             }
 			long currentTime = System.currentTimeMillis(); //The time when we began our game loop
 			long timeDifference = currentTime - lastTime; //The difference in time since the last game loop (expressed as a negative value
@@ -484,7 +513,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                 if(song==false)
                 {
                     
-                    File file = new File("spear.wav");
+                    File file = new File(audio);
                     AudioInputStream audio = AudioSystem.getAudioInputStream(file);
                     clip = AudioSystem.getClip();
                     clip.open(audio);
@@ -494,9 +523,11 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                 }
             }
             catch(Exception e){
-                e.printStackTrace();
+                System.out.println("eroor");
             }
 		}
+        frame.dispose();
+        clip.stop();
 	}
 
     @Override

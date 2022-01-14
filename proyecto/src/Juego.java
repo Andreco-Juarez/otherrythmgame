@@ -23,6 +23,6 @@ import java.io.InputStream;
 public class Juego{
 
     public Juego(){
-        new JuegoGrafico();
+        ///new JuegoGrafico();
     }
 }

@@ -113,7 +113,8 @@ public class TitleScreen extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if(source == btnJugar){
-            Juego juego = new Juego();
+            //Juego juego = new Juego();
+            LevelSelection lvs = new LevelSelection();
             dispose();
         }
         if(source == btnInstrucciones){
