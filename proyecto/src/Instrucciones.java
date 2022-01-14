@@ -32,23 +32,17 @@ public class Instrucciones extends JFrame implements ActionListener{
         }
 
         //Instanciar labels
-        lblInstrucciones = new JLabel("Instruccion 1: Toca la tecla correspondiente al carril de la nota cuando llegua abajo de la pantalla");
+        lblInstrucciones = new JLabel("Instruccion 1: Toca la tecla correspondiente al carril de la nota cuando llegua abajo de la pantalla, Puedes editar tus teclas en configuracion");
         lblInstrucciones.setBounds(0,100,800,100);
         lblInstrucciones.setFont(fontLabel);
         lblInstrucciones.setForeground(Color.GREEN);
         c.add(lblInstrucciones);
 
-        lblInstrucciones2 = new JLabel("Instruccion 2: Manten presionada la tecla correspondiente al carril de la nota con estela");
+        lblInstrucciones2 = new JLabel("Instruccion 2: intenta dar en el momentoo justo para tener una mejor precision");
         lblInstrucciones2.setBounds(0,200,800,100);
         lblInstrucciones2.setFont(fontLabel);
         lblInstrucciones2.setForeground(Color.GREEN);
         c.add(lblInstrucciones2);
-
-        lblInstrucciones3 = new JLabel("Instruccion 3: Solo puedes fallar 5 veces");
-        lblInstrucciones3.setBounds(0,300,800,100);
-        lblInstrucciones3.setFont(fontLabel);
-        lblInstrucciones3.setForeground(Color.GREEN);
-        c.add(lblInstrucciones3);
 
         lblTitulo = new JLabel("Instrucciones");
         lblTitulo.setBounds(0,0,800,100);

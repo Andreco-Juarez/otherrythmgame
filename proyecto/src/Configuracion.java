@@ -22,6 +22,7 @@ public class Configuracion extends JFrame implements ActionListener {
     private String[] teclas_split = {"",""};
     private JButton boton_guardar, boton_salir;
     private int[][] colores = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
+    private boolean check=true;
 
     public void CrearGUI() throws FileNotFoundException {
         setTitle("Another Rhythm Game");
@@ -328,46 +329,67 @@ public class Configuracion extends JFrame implements ActionListener {
             conf[13] = input_colorR4.getText();
             conf[14] = input_colorG4.getText();
             conf[15] = input_colorB4.getText();
-            FileWriter fichero = null;
-            PrintWriter pw = null;
-            try
-            {
-                fichero = new FileWriter("config.conf");
-                pw = new PrintWriter(fichero);
-
-                pw.println("left=\""+conf[0]+"\"");
-                pw.println("down=\""+conf[1]+"\"");
-                pw.println("up=\""+conf[2]+"\"");
-                pw.println("right=\""+conf[3]+"\"");
-                pw.println("[COLORES]");
-                pw.println("color1notaR="+conf[4]);
-                pw.println("color1notaG="+conf[5]);
-                pw.println("color1notaB="+conf[6]);
-                pw.println("color2notaR="+conf[7]);
-                pw.println("color2notaG="+conf[8]);
-                pw.println("color2notaB="+conf[9]);
-                pw.println("color3notaR="+conf[10]);
-                pw.println("color3notaG="+conf[11]);
-                pw.println("color3notaB="+conf[12]);
-                pw.println("color4notaR="+conf[13]);
-                pw.println("color4notaG="+conf[14]);
-                pw.println("color4notaB="+conf[15]);
-                
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }finally {
-                try {
-                    if (null != fichero)
-                    fichero.close();
-                } catch (Exception e2) {
-                   e2.printStackTrace();
+            for(int p=0; p<15; p++){
+                if(p<4){
+                    if(conf[p].length()!=1){
+                        check = false;
+                    }
+                }
+                else{
+                    int integrNum = Integer.parseInt(conf[p]);
+                    if(integrNum < 0 || integrNum > 255){
+                        check = false;
+                    }
                 }
             }
-            try {
-                CrearGUI();
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
+            if(check)
+            {
+                FileWriter fichero = null;
+                PrintWriter pw = null;
+                try
+                {
+                    fichero = new FileWriter("config.conf");
+                    pw = new PrintWriter(fichero);
+
+                    pw.println("left=\""+conf[0]+"\"");
+                    pw.println("down=\""+conf[1]+"\"");
+                    pw.println("up=\""+conf[2]+"\"");
+                    pw.println("right=\""+conf[3]+"\"");
+                    pw.println("[COLORES]");
+                    pw.println("color1notaR="+conf[4]);
+                    pw.println("color1notaG="+conf[5]);
+                    pw.println("color1notaB="+conf[6]);
+                    pw.println("color2notaR="+conf[7]);
+                    pw.println("color2notaG="+conf[8]);
+                    pw.println("color2notaB="+conf[9]);
+                    pw.println("color3notaR="+conf[10]);
+                    pw.println("color3notaG="+conf[11]);
+                    pw.println("color3notaB="+conf[12]);
+                    pw.println("color4notaR="+conf[13]);
+                    pw.println("color4notaG="+conf[14]);
+                    pw.println("color4notaB="+conf[15]);
+                    
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }finally {
+                    try {
+                        if (null != fichero)
+                        fichero.close();
+                    } catch (Exception e2) {
+                    e2.printStackTrace();
+                    }
+                }
+                try {
+                    CrearGUI();
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Error en la configuracion\n vuelva a intentarlo:(");
+
             }
             TitleScreen marco = new TitleScreen();
             marco.setSize(800, 600);

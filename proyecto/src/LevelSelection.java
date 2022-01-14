@@ -56,7 +56,7 @@ public class LevelSelection implements ActionListener{
 
         bg = new ButtonGroup();
 
-        vida3 = new JRadioButton("Vidas: 3");
+        vida3 = new JRadioButton("Vidas: 3", true);
         vida3.setFont(buttonFont);
         vida3.setForeground(textoBotones);
         vida3.setBackground(Color.BLACK);
