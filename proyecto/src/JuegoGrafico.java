@@ -52,7 +52,9 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 
     private Vector<Nota> notas = new Vector<Nota>(500);
     private Vector<String> hitobject = new Vector<String>(1500);
+    private Font font = new Font("Agency FB", Font.BOLD, 50);
     private Integer tiempo = 0, currentTimeSong=0;
+    private Color color1,color2,color3,color4;
     public Graphics g;
     public Clip clip;
     public int combo=0;
@@ -262,6 +264,17 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         inicialConf();
 		frame.addKeyListener(this);
 
+        //inicializar colores
+        color1 = new Color(colores[0][0],colores[0][1],colores[0][2]);
+        color2 = new Color(colores[1][0],colores[1][1],colores[1][2]);
+        color3 = new Color(colores[2][0],colores[2][1],colores[2][2]);
+        color4 = new Color(colores[3][0],colores[3][1],colores[3][2]);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+        }
+
         Timer timer2 = new Timer();
 
         TimerTask tarea2 = new TimerTask(){
@@ -355,6 +368,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 	private void draw(Graphics g) {
         int i=0, k=0;
         g.setColor(Color.white);
+        g.setFont(font);
         g.drawString(combo+"", 100, 100);
 		g.setColor(Color.gray);
         g.fillRect(225,0,550,1000);
@@ -364,28 +378,44 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         g.fillOval(505,850,100,100);
         g.fillOval(630,850,100,100);
         for(i=0+w;i<notas.size();i++){
-            g.setColor(Color.WHITE);
+            if(notas.elementAt(i).ancho==255)
+            {
+                g.setColor(color1);
+            }
+            else if(notas.elementAt(i).ancho==380)
+            {
+                g.setColor(color2);
+            }
+            else if(notas.elementAt(i).ancho==505)
+            {
+                g.setColor(color3);
+            }
+            else if(notas.elementAt(i).ancho==630)
+            {
+                g.setColor(color4);
+            }
+            //g.setColor(Color.WHITE);
             g.fillOval(notas.elementAt(i).ancho, notas.elementAt(i).alto, notas.elementAt(i).radio, notas.elementAt(i).radio);
         }
         
         
         if(keys[0]==true){
-            g.setColor(Color.WHITE);
+            g.setColor(color1);
             g.fillOval(255,850,100,100);
             checkInput(1);
         }
         if(keys[1]==true){
-            g.setColor(Color.WHITE);
+            g.setColor(color2);
             g.fillOval(380,850,100,100);
             checkInput(2);
         }
         if(keys[2]==true){
-            g.setColor(Color.WHITE);
+            g.setColor(color3);
             g.fillOval(505,850,100,100);
             checkInput(3);
         }
         if(keys[3]==true){
-            g.setColor(Color.WHITE);
+            g.setColor(color4);
             g.fillOval(630,850,100,100);
             checkInput(4);
         }
