@@ -271,7 +271,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         color4 = new Color(colores[3][0],colores[3][1],colores[3][2]);
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
         }
 
