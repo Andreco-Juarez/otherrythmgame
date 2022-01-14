@@ -34,6 +34,9 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     public class Nota{
         int alto, ancho;
         int radio=100;
+        boolean block=false;
+        //s a b c n f
+        char ps='n';
 
         Nota(int alto, int ancho){
             this.alto=alto;
@@ -52,6 +55,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     private Integer tiempo = 0, currentTimeSong=0;
     public Graphics g;
     public Clip clip;
+    public int combo=0;
     public boolean song=false;
     private char[] configuracion = {'a', 'w', 's', 'd'};
     private String[] teclas_split = {"",""};
@@ -68,6 +72,113 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 
     //////////////////////////////////////////////////////////////////
     //////////////////////// metodo para iniciar configuracion #INICIALCONF //////////////////////////////
+
+    public void checkInput(int side){
+        ///System.out.println(combo);
+        for(int i=0; i<notas.size(); i++){
+            int alturaactual = notas.get(i).alto;
+            switch (side){
+                case 1:
+                    //System.out.println("Entreeeee!");
+                    if(notas.elementAt(i).block==false && notas.elementAt(i).ancho==255){
+                        //System.out.println(alturaactual);
+                        if(alturaactual > 850 && alturaactual < 900 ){
+                            
+                            notas.elementAt(i).ps = 'c' ;
+                        }else if(alturaactual > 900 && alturaactual < 950 ){
+                            
+                            notas.elementAt(i).ps = 'b' ;
+                        }else if(alturaactual > 950 && alturaactual < 1000 ){
+                            
+                            notas.elementAt(i).ps = 'a' ;
+                        }else if(alturaactual > 1000 && alturaactual < 1050 ){
+                            
+                            notas.elementAt(i).ps = 's' ;
+                        }
+                        if(alturaactual > 800){
+                            
+                            notas.elementAt(i).block=true;
+                            combo++;
+                        }
+                        return ;
+                    }
+                    break;
+                case 2:
+                    if(notas.elementAt(i).block==false && notas.elementAt(i).ancho==380){
+                        //System.out.println(alturaactual);
+                        if(alturaactual > 850 && alturaactual < 900 ){
+                            
+                            notas.elementAt(i).ps = 'c' ;
+                        }else if(alturaactual > 900 && alturaactual < 950 ){
+                            
+                            notas.elementAt(i).ps = 'b' ;
+                        }else if(alturaactual > 950 && alturaactual < 1000 ){
+                            
+                            notas.elementAt(i).ps = 'a' ;
+                        }else if(alturaactual > 1000 && alturaactual < 1050 ){
+                            
+                            notas.elementAt(i).ps = 's' ;
+                        }
+                        if(alturaactual > 800){
+                            
+                            notas.elementAt(i).block=true;
+                            combo++;
+                        }
+                        return ;
+                    }
+                    break;
+                case 3:
+                    if(notas.elementAt(i).block==false && notas.elementAt(i).ancho==505){
+                        //System.out.println(alturaactual);
+                        if(alturaactual > 850 && alturaactual < 900 ){
+                            
+                            notas.elementAt(i).ps = 'c' ;
+                        }else if(alturaactual > 900 && alturaactual < 950 ){
+                            
+                            notas.elementAt(i).ps = 'b' ;
+                        }else if(alturaactual > 950 && alturaactual < 1000 ){
+                            
+                            notas.elementAt(i).ps = 'a' ;
+                        }else if(alturaactual > 1000 && alturaactual < 1050 ){
+                            
+                            notas.elementAt(i).ps = 's' ;
+                        }
+                        if(alturaactual > 800){
+                            
+                            notas.elementAt(i).block=true;
+                            combo++;
+                        }
+                        return ;
+                    }
+                    break;
+                case 4:
+                    if(notas.elementAt(i).block==false && notas.elementAt(i).ancho==630){
+                        //System.out.println(alturaactual);
+                        if(alturaactual > 850 && alturaactual < 900 ){
+                            
+                            notas.elementAt(i).ps = 'c' ;
+                        }else if(alturaactual > 900 && alturaactual < 950 ){
+                            
+                            notas.elementAt(i).ps = 'b' ;
+                        }else if(alturaactual > 950 && alturaactual < 1000 ){
+                            
+                            notas.elementAt(i).ps = 'a' ;
+                        }else if(alturaactual > 1000 && alturaactual < 1050 ){
+                            
+                            notas.elementAt(i).ps = 's' ;
+                        }
+                        if(alturaactual > 800){
+                            
+                            notas.elementAt(i).block=true;
+                            combo++;
+                        }
+                        return ;
+                    }
+                    break;
+            }
+        }
+    }
+
     public void inicialConf(){
         File config = new File("config.conf");
         try {
@@ -108,7 +219,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
     //////////////////////// metodo para iniciar objetos #INICIALOBJECT //////////////////////////////
     public void inicialObject(){
         int i=0;
-        File config = new File("spearClean.arg");
+        File config = new File("xevelClean.arg");
         try (Scanner obj = new Scanner(config)) {
             while(obj.hasNextLine()){
                 String linea = obj.nextLine();
@@ -175,70 +286,38 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
                             notas.addElement(new Nota(0,630));
                         }
                         z++;
-                        /*if(z<586)
-                            z++;
-                        else{
-                            System.exit(0);
-                        }*/
+                        
                     }
                     
-                    //notas.elementAt(i).avanzar();
+                    
                 }
 
-                /*hitobject.forEach((object) -> {
-                    int i = 0;
-                    String[] split = object.split(",");
-                    if(currentTimeSong>=Integer.parseInt(split[1])){
-                        if(split[0].equals("64")){
-                            notas.addElement(new Nota(0,255));
-                        }
-                        else if(split[0].equals("192")){
-                            notas.addElement(new Nota(0,380));
-                        }
-                        else if(split[0].equals("320")){
-                            notas.addElement(new Nota(0,505));
-                        }
-                        else if(split[0].equals("448")){
-                            notas.addElement(new Nota(0,630));
-                        }
-                    }
-                    else if(Integer.parseInt(split[1])+1500>=currentTimeSong){
-                        hitobject.remove(i);
-                    }
-                    i++;
-                });*/
+                
                 
                 for(int i=0+w; i<notas.size();i++){
-                    if(notas.elementAt(i).alto<=1000)
+                    if(notas.elementAt(i).alto<=1500)
                         notas.elementAt(i).avanzar();
-                    else
+                    else{
                         w++;
-                    //System.out.println("Nota"+i+"||||"+notas.elementAt(i).alto);  
+                        if(notas.elementAt(i).block==false){
+                            combo=0;
+                            //System.out.println("entre");
+                            notas.elementAt(i).block=true;
+                        }
+                        
+                    }
+                        
+
+                     
                 }
-                /*notas.forEach((nota) -> {
-                    //int i=0;
-                    if(nota.alto<=1000)
-                        nota.avanzar();
-                    //else
-                    //    notas.remove(i);
-                    //i++;
-                });*/
-                //System.out.println();
+                
                 currentTimeSong++;
             }
         };
 
         timer2.schedule(tarea2, 0, 1);
 
-        /*Timer tiempo = new Timer();
-        TimerTask tareaContra = new TimerTask() {
-            public void run() {
-                currentTimeSong++;
-                //System.out.println(currentTimeSong);
-            }
-        };
         
-        tiempo.schedule(tareaContra, 0, 1);*/
 
 
 		start();
@@ -275,6 +354,8 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 	
 	private void draw(Graphics g) {
         int i=0, k=0;
+        g.setColor(Color.white);
+        g.drawString(combo+"", 100, 100);
 		g.setColor(Color.gray);
         g.fillRect(225,0,550,1000);
         g.setColor(Color.BLACK);
@@ -291,18 +372,22 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
         if(keys[0]==true){
             g.setColor(Color.WHITE);
             g.fillOval(255,850,100,100);
+            checkInput(1);
         }
         if(keys[1]==true){
             g.setColor(Color.WHITE);
             g.fillOval(380,850,100,100);
+            checkInput(2);
         }
         if(keys[2]==true){
             g.setColor(Color.WHITE);
             g.fillOval(505,850,100,100);
+            checkInput(3);
         }
         if(keys[3]==true){
             g.setColor(Color.WHITE);
             g.fillOval(630,850,100,100);
+            checkInput(4);
         }
 	}
 	
@@ -313,7 +398,7 @@ public class JuegoGrafico extends Canvas implements Runnable, KeyListener{
 	
 	@Override
 	public void run() {
-		int desiredTPS = 60; //Target ticks per second
+		int desiredTPS = 1000; //Target ticks per second
 		
 		long lastTime = System.currentTimeMillis(); //Time since we last looped (tick + draw), initialized here to the current time
 		long secondTime = lastTime + 1000; //Target time one second ahead of when we last updated fps/tps
